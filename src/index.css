@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Playfair Display', serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  @apply bg-accent-light dark:bg-accent-dark text-primary-light dark:text-primary-dark;
+}
+@layer utilities {
+  .bg-accent-light {
+    background-color: #e3bca2;
+  }
+  .bg-accent-dark {
+    background-color: #3a2b23;
+  }
+  .text-primary-light {
+    color: #fdfaf7;
+  }
+  .text-primary-dark {
+    color: #d6c3b8;
+  }
+}
