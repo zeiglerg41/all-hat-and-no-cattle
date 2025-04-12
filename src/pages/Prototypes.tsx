@@ -144,7 +144,7 @@ function Designs() {
                 }`}
                 onClick={() => scrollToSection(type)}
               >
-                {type}s
+                {type === 'pants' ? 'Pants' : `${type}s`}
               </button>
             ))}
           </div>
@@ -158,7 +158,9 @@ function Designs() {
           return (
             <div key={category} ref={sectionRefs[category]} id={`section-${category}`} className="mb-20 scroll-mt-32">
               <div className="flex items-center mb-8">
-                <h2 className="text-3xl text-text-light dark:text-text-dark font-heading capitalize">{category}s</h2>
+                <h2 className="text-3xl text-text-light dark:text-text-dark font-heading capitalize">
+                  {category === 'pants' ? 'Pants' : `${category}s`}
+                </h2>
                 <div className="ml-4 h-0.5 flex-grow bg-accent-light/20 dark:bg-accent-dark/20"></div>
               </div>
               
@@ -190,6 +192,22 @@ function Designs() {
                     </div>
                   </div>
                 ))}
+              </div>
+              
+              {/* Back to Top Button */}
+              <div className="mt-12 text-center">
+                <button 
+                  onClick={() => {
+                    sectionRefs.all.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    setActiveFilter(null);
+                  }}
+                  className="inline-flex items-center gap-2 px-6 py-2 bg-secondary-light/50 dark:bg-secondary-dark/50 hover:bg-accent-light/10 dark:hover:bg-accent-dark/10 border border-accent-light/30 dark:border-accent-dark/30 rounded-sm text-accent-light dark:text-accent-dark font-heading transition-all duration-300"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="m18 15-6-6-6 6"/>
+                  </svg>
+                  Back to Categories
+                </button>
               </div>
             </div>
           );
