@@ -4,7 +4,7 @@ function About() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative py-20 px-4 bg-[url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22%3E%3Cpath d=%22M30 5L35 20H45L37.5 29.5L40 45L30 37.5L20 45L22.5 29.5L15 20H25L30 5Z%22 fill=%22%23c74e3e%22 fill-opacity=%220.05%22/%3E%3C/svg%3E')]">
+      <section className="relative py-20 px-4 overflow-x-hidden bg-[url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22%3E%3Cpath d=%22M30 5L35 20H45L37.5 29.5L40 45L30 37.5L20 45L22.5 29.5L15 20H25L30 5Z%22 fill=%22%23c74e3e%22 fill-opacity=%220.05%22/%3E%3C/svg%3E')]">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="text-5xl md:text-6xl mb-6 text-accent-light dark:text-accent-dark font-heading" style={{ textShadow: '1px 1px 0px var(--color-sand)' }}>
             The Story Behind<br /> All Hat and No Cattle
@@ -17,7 +17,7 @@ function About() {
       </section>
 
       {/* Brand Story Section */}
-      <section className="py-16 px-4">
+      <section className="py-16 px-4 overflow-x-hidden">
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="saloon-border p-6 bg-secondary-light/30 dark:bg-secondary-dark/30">
@@ -41,7 +41,7 @@ function About() {
       </section>
 
       {/* Philosophy Section */}
-      <section className="py-16 px-4 bg-secondary-light/20 dark:bg-secondary-dark/20">
+      <section className="py-16 px-4 overflow-x-hidden bg-secondary-light/20 dark:bg-secondary-dark/20">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-4xl text-center mb-12 text-text-light dark:text-text-dark font-heading" style={{ textShadow: '0.5px 0.5px 0px var(--color-sand)' }}>
             Our Philosophy
@@ -88,7 +88,7 @@ function About() {
       </section>
 
       {/* The Process Section */}
-      <section className="py-16 px-4">
+      <section className="py-16 px-4 overflow-x-hidden">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-4xl text-center mb-6 text-text-light dark:text-text-dark font-heading" style={{ textShadow: '0.5px 0.5px 0px var(--color-sand)' }}>
             Our Process
@@ -129,7 +129,7 @@ function About() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-accent-light/10 dark:bg-accent-dark/10 relative overflow-hidden">
+      <section className="py-20 px-4 overflow-x-hidden bg-accent-light/10 dark:bg-accent-dark/10 relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full opacity-5">
           <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" fill="var(--color-terracotta)">
             <path d="M30 5L35 20H45L37.5 29.5L40 45L30 37.5L20 45L22.5 29.5L15 20H25L30 5Z" />

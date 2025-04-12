@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Scissors, ChevronRight, ChevronLeft } from 'lucide-react';
 
-type PieceType = 'jacket' | 'pants';
+type PieceType = 'jacket' | 'pants' | 'vest' | 'shirt';
 
 interface CommissionFormData {
   name: string;
@@ -91,7 +91,7 @@ function Home() {
       </section>
 
       {/* Featured Work Section with Interactive Carousel */}
-      <section className="py-16 bg-secondary-light/50 dark:bg-secondary-dark/50">
+      <section className="py-16 bg-secondary-light/50 dark:bg-secondary-dark/50 overflow-x-hidden">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-4xl text-center mb-4 text-text-light dark:text-text-dark">Featured Work</h2>
           <p className="text-center mb-12 max-w-2xl mx-auto text-text-light/80 dark:text-text-dark/80">
@@ -104,7 +104,7 @@ function Home() {
       </section>
 
       {/* Portfolio Section */}
-      <section id="portfolio" className="py-20 px-4">
+      <section id="portfolio" className="py-20 px-4 overflow-x-hidden">
         <h2 className="text-4xl text-center mb-12 text-text-light dark:text-text-dark">Our Creations</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
           {[
@@ -130,12 +130,12 @@ function Home() {
       </section>
 
       {/* Commission Form Section */}
-      <section id="commission" className="py-20 px-4 bg-secondary-light dark:bg-secondary-dark">
+      <section id="commission" className="py-20 px-4 bg-secondary-light dark:bg-secondary-dark overflow-x-hidden max-w-[100vw]">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-4xl text-center mb-12 text-text-light dark:text-text-dark">
-            Request a Commission
+          <h2 className="text-3xl sm:text-4xl md:text-3xl text-center mb-8 md:mb-12 text-text-light dark:text-text-dark font-heading break-words">
+            Request a Custom Piece
           </h2>
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6 w-full">
             <div>
               <label htmlFor="name" className="block mb-2 text-text-light dark:text-text-dark">Name</label>
               <input
@@ -169,6 +169,8 @@ function Home() {
               >
                 <option value="jacket">Jacket</option>
                 <option value="pants">Pants</option>
+                <option value="vest">Vest</option>
+                <option value="shirt">Shirt</option>
               </select>
             </div>
             <div>
@@ -183,10 +185,10 @@ function Home() {
             </div>
             <button
               type="submit"
-              className="w-full bg-accent-light dark:bg-accent-dark hover:bg-opacity-90 text-primary-light dark:text-primary-dark py-4 rounded-sm transition-all duration-300 flex items-center justify-center gap-2"
+              className="w-full bg-accent-light dark:bg-accent-dark hover:bg-opacity-90 text-primary-light dark:text-primary-dark py-3 sm:py-4 rounded-sm transition-all duration-300 flex items-center justify-center gap-2 text-sm sm:text-base"
             >
-              <Scissors className="w-5 h-5" />
-              Submit Commission Request
+              <Scissors className="w-4 h-4 sm:w-5 sm:h-5" />
+              <span className="break-normal">Submit Request</span>
             </button>
           </form>
         </div>
@@ -265,29 +267,29 @@ function FeaturedCarousel() {
 
   return (
     <div 
-      className="relative overflow-hidden rounded-md shadow-xl"
+      className="relative overflow-hidden rounded-md shadow-xl max-w-full"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       ref={carouselRef}
     >
       {/* Main carousel container */}
       <div 
-        className="flex transition-transform duration-500 ease-in-out h-[500px] md:h-[600px]"
+        className="flex transition-transform duration-500 ease-in-out h-[500px] md:h-[600px] w-full"
         style={{ transform: `translateX(-${activeIndex * 100}%)` }}
       >
         {featuredItems.map((item, index) => (
-          <div key={item.id} className="min-w-full relative">
+          <div key={item.id} className="min-w-full relative w-full">
             <img 
               src={`${item.image}?auto=format&fit=crop&w=1200&q=80`}
               alt={item.title}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex flex-col justify-end p-8 md:p-12">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex flex-col justify-end p-4 sm:p-6 md:p-12">
               <span className="text-accent-light dark:text-accent-dark text-sm font-medium mb-2">{item.category}</span>
-              <h3 className="text-white text-2xl md:text-4xl font-light mb-3">{item.title}</h3>
-              <p className="text-white/80 md:max-w-2xl mb-6">{item.description}</p>
+              <h3 className="text-white text-xl sm:text-2xl md:text-4xl font-light mb-2 md:mb-3 break-words">{item.title}</h3>
+              <p className="text-white/80 md:max-w-2xl mb-4 md:mb-6 text-sm sm:text-base break-words">{item.description}</p>
               <div>
-                <button className="bg-accent-light/90 dark:bg-accent-dark/90 hover:bg-accent-light dark:hover:bg-accent-dark text-primary-light dark:text-primary-dark px-6 py-2 rounded-sm transition-colors">
+                <button className="bg-accent-light/90 dark:bg-accent-dark/90 hover:bg-accent-light dark:hover:bg-accent-dark text-primary-light dark:text-primary-dark px-4 sm:px-6 py-2 rounded-sm transition-colors text-sm sm:text-base">
                   View Details
                 </button>
               </div>

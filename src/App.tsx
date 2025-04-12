@@ -6,6 +6,21 @@ import Designs from './pages/Prototypes';
 import Silhouettes from './pages/Silhouettes';
 import About from './pages/About';
 
+// Apply Tailwind utilities that might be missing
+// This will be used to handle very small screens (extra small - xs)
+const style = document.createElement('style');
+style.innerHTML = `
+  @media (min-width: 480px) {
+    .xs\\:inline {
+      display: inline;
+    }
+    .xs\\:hidden {
+      display: none;
+    }
+  }
+`;
+document.head.appendChild(style);
+
 interface NavigationProps {
   isMenuOpen: boolean;
   setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -38,17 +53,23 @@ function Navigation({ isMenuOpen, setIsMenuOpen, isDark, toggleDarkMode }: Navig
     } backdrop-blur-sm border-b border-text-light/10 dark:border-text-dark/10`}>
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center">
-          <Link to="/" className={`text-accent-light dark:text-accent-dark transition-all duration-300 ${scrolled ? 'text-2xl' : 'text-3xl'} flex items-center`}>
+          <Link to="/" className={`text-accent-light dark:text-accent-dark transition-all duration-300 ${scrolled ? 'text-xl sm:text-2xl' : 'text-2xl sm:text-3xl'} flex items-center`}>
             {/* Logo with Southwestern Style */}
             <div className={`relative transition-all duration-300 ${
-              scrolled ? 'w-12 h-12' : 'w-16 h-16'
-            } mr-3 flex-shrink-0`}>
+              scrolled ? 'w-8 h-8 sm:w-12 sm:h-12' : 'w-10 h-10 sm:w-16 sm:h-16'
+            } mr-2 sm:mr-3 flex-shrink-0`}>
               <div className="absolute inset-0 bg-[var(--color-sand)] rounded-full flex items-center justify-center">
-                <span className="font-heading text-primary-dark font-bold text-lg" style={{ transform: 'rotate(-5deg)' }}>AH</span>
+                <span className="font-heading text-primary-dark font-bold text-sm sm:text-lg" style={{ transform: 'rotate(-5deg)' }}>AH</span>
               </div>
               <div className="absolute inset-0 border-2 border-[var(--color-terracotta)] rounded-full" style={{ borderStyle: 'dashed' }}></div>
             </div>
-            <span className="font-heading" style={{ textShadow: '0.5px 0.5px 0px var(--color-sand)' }}>
+            <span className={`font-heading hidden sm:inline ${scrolled ? '' : ''}`} style={{ textShadow: '0.5px 0.5px 0px var(--color-sand)' }}>
+              All Hat and No Cattle
+            </span>
+            <span className={`font-heading sm:hidden ${scrolled ? 'inline' : 'hidden'}`} style={{ textShadow: '0.5px 0.5px 0px var(--color-sand)' }}>
+              AHNC
+            </span>
+            <span className={`font-heading sm:hidden ${scrolled ? 'hidden' : 'inline'}`} style={{ textShadow: '0.5px 0.5px 0px var(--color-sand)' }}>
               All Hat and No Cattle
             </span>
           </Link>
@@ -234,14 +255,14 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-primary-light dark:bg-primary-dark text-text-light dark:text-text-dark transition-colors duration-200">
+      <div className="min-h-screen bg-primary-light dark:bg-primary-dark text-text-light dark:text-text-dark transition-colors duration-200 overflow-x-hidden">
         {/* Decorative southwestern pattern - top edge */}
         <div className="fixed top-0 left-0 w-full h-2 z-50 bg-[url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%228%22 viewBox=%220 0 80 8%22%3E%3Cpath d=%22M0,0 L10,4 L0,8 L10,4 L20,8 L30,4 L40,8 L50,4 L60,8 L70,4 L80,8 L80,0 Z%22 fill=%22%23c74e3e%22/%3E%3C/svg%3E')] bg-repeat-x"></div>
         
         <Navigation isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} isDark={isDark} toggleDarkMode={toggleDarkMode} />
         
         {/* Main Content */}
-        <main className="pt-16">
+        <main className="pt-16 max-w-[100vw] overflow-x-hidden">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />

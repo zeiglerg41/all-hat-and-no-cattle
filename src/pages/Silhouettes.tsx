@@ -124,10 +124,10 @@ const outfits: Outfit[] = [
 
 function Silhouettes() {
   return (
-    <div className="py-20 px-4">
+    <div className="py-20 px-4 max-w-[100vw] overflow-x-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h1 className="text-5xl mb-6 text-accent-light dark:text-accent-dark font-heading" style={{ textShadow: '0.5px 0.5px 0px var(--color-sand)' }}>
+          <h1 className="text-4xl md:text-5xl mb-6 text-accent-light dark:text-accent-dark font-heading" style={{ textShadow: '0.5px 0.5px 0px var(--color-sand)' }}>
             Shop The Look
           </h1>
           <div className="w-24 h-0.5 mx-auto mb-6 bg-accent-light dark:bg-accent-dark"></div>
@@ -141,17 +141,17 @@ function Silhouettes() {
           {outfits.map((outfit) => (
             <div key={outfit.id} className="group">
               {/* Outfit Header */}
-              <div className="flex items-center mb-6">
-                <h2 className="text-3xl text-text-light dark:text-text-dark font-heading">
+              <div className="flex items-center mb-6 flex-wrap">
+                <h2 className="text-2xl md:text-3xl text-text-light dark:text-text-dark font-heading">
                   {outfit.name}
                 </h2>
                 <div className="ml-4 h-0.5 flex-grow bg-accent-light/20 dark:bg-accent-dark/20"></div>
-                <span className="text-accent-light dark:text-accent-dark font-heading ml-4 whitespace-nowrap">
+                <span className="text-accent-light dark:text-accent-dark font-heading ml-2 md:ml-4 whitespace-nowrap">
                   ${outfit.price}
                 </span>
               </div>
               
-              <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 group">
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 md:gap-8 group">
                 {/* Main Image - 3 columns on large screens */}
                 <div className="lg:col-span-3 aspect-[4/3] overflow-hidden rounded-sm shadow-lg dark:shadow-text-dark/10">
                   <img
@@ -163,7 +163,7 @@ function Silhouettes() {
                 
                 {/* Outfit Details - 2 columns on large screens */}
                 <div className="lg:col-span-2 flex flex-col">
-                  <div className="bg-secondary-light/30 dark:bg-secondary-dark/30 p-6 rounded-sm h-full flex flex-col justify-between">
+                  <div className="bg-secondary-light/30 dark:bg-secondary-dark/30 p-4 md:p-6 rounded-sm h-full flex flex-col justify-between">
                     <div>
                       <div className="mb-4">
                         <span className="inline-block bg-accent-light/10 dark:bg-accent-dark/10 text-accent-light dark:text-accent-dark px-3 py-1 text-sm font-medium rounded-sm mb-3">
@@ -178,7 +178,7 @@ function Silhouettes() {
                       <div className="space-y-4 mb-8">
                         {outfit.items.map((item, index) => (
                           <div key={index}>
-                            <h4 className="font-heading flex items-center">
+                            <h4 className="font-heading flex items-center flex-wrap">
                               <span className="w-2 h-2 bg-accent-light dark:bg-accent-dark rounded-full mr-2"></span>
                               {item.name}
                               <span className="text-text-light/50 dark:text-text-dark/50 text-sm ml-2 capitalize">
@@ -189,7 +189,7 @@ function Silhouettes() {
                               {item.features.map((feature, i) => (
                                 <li key={i} className="text-text-light/70 dark:text-text-dark/70 flex items-start">
                                   <span className="mr-1 text-accent-light dark:text-accent-dark">•</span>
-                                  {feature}
+                                  <span className="flex-1">{feature}</span>
                                 </li>
                               ))}
                             </ul>
@@ -220,14 +220,14 @@ function Silhouettes() {
         </div>
         
         {/* Call to Action */}
-        <div className="mt-20 bg-secondary-light/30 dark:bg-secondary-dark/30 p-8 rounded-sm text-center">
-          <h2 className="text-2xl mb-4 text-text-light dark:text-text-dark font-heading">Need Something Different?</h2>
+        <div className="mt-20 bg-secondary-light/30 dark:bg-secondary-dark/30 p-6 md:p-8 rounded-sm text-center">
+          <h2 className="text-xl md:text-2xl mb-4 text-text-light dark:text-text-dark font-heading">Need Something Different?</h2>
           <p className="mb-6 max-w-2xl mx-auto text-text-light/80 dark:text-text-dark/80">
             Can't find exactly what you're looking for? We can create a custom look tailored to your specific preferences and style.
           </p>
           <Link
             to="/#custom-requests"
-            className="inline-block bg-accent-light dark:bg-accent-dark hover:bg-opacity-90 text-primary-light dark:text-primary-dark px-8 py-3 rounded-sm transition-all duration-300 font-heading tracking-wide"
+            className="inline-block bg-accent-light dark:bg-accent-dark hover:bg-opacity-90 text-primary-light dark:text-primary-dark px-6 py-3 rounded-sm transition-all duration-300 font-heading tracking-wide"
           >
             Request Custom Look
           </Link>

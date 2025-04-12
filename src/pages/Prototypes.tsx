@@ -110,7 +110,7 @@ function Designs() {
   };
   
   return (
-    <div className="py-20 px-4">
+    <div className="py-20 px-4 max-w-[100vw] overflow-x-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16" ref={sectionRefs.all}>
           <h1 className="text-5xl mb-6 text-accent-light dark:text-accent-dark font-heading" style={{ textShadow: '0.5px 0.5px 0px var(--color-sand)' }}>
@@ -123,9 +123,9 @@ function Designs() {
           </p>
           
           {/* Category navigation */}
-          <div className="flex flex-wrap justify-center gap-4 mt-8 sticky top-20 z-30 py-4 bg-primary-light/90 dark:bg-primary-dark/90 backdrop-blur-sm rounded-sm">
+          <div className="flex flex-wrap justify-center gap-2 md:gap-4 mt-8 sticky top-20 z-30 py-4 bg-primary-light/90 dark:bg-primary-dark/90 backdrop-blur-sm rounded-sm">
             <button 
-              className={`px-6 py-2 rounded-sm font-heading tracking-wide transition-all duration-300 ${
+              className={`px-4 py-2 text-sm md:text-base md:px-6 rounded-sm font-heading tracking-wide transition-all duration-300 ${
                 activeFilter === null 
                   ? 'bg-accent-light dark:bg-accent-dark text-white'
                   : 'border border-accent-light/50 dark:border-accent-dark/50 text-accent-light dark:text-accent-dark hover:bg-accent-light/10 dark:hover:bg-accent-dark/10'
@@ -137,7 +137,7 @@ function Designs() {
             {categoryOrder.map(type => (
               <button 
                 key={type} 
-                className={`px-6 py-2 rounded-sm font-heading tracking-wide transition-all duration-300 capitalize ${
+                className={`px-4 py-2 text-sm md:text-base md:px-6 rounded-sm font-heading tracking-wide transition-all duration-300 capitalize ${
                   activeFilter === type 
                     ? 'bg-accent-light dark:bg-accent-dark text-white'
                     : 'border border-accent-light/50 dark:border-accent-dark/50 text-accent-light dark:text-accent-dark hover:bg-accent-light/10 dark:hover:bg-accent-dark/10'
@@ -158,13 +158,13 @@ function Designs() {
           return (
             <div key={category} ref={sectionRefs[category]} id={`section-${category}`} className="mb-20 scroll-mt-32">
               <div className="flex items-center mb-8">
-                <h2 className="text-3xl text-text-light dark:text-text-dark font-heading capitalize">
+                <h2 className="text-2xl md:text-3xl text-text-light dark:text-text-dark font-heading capitalize">
                   {category === 'pants' ? 'Pants' : `${category}s`}
                 </h2>
                 <div className="ml-4 h-0.5 flex-grow bg-accent-light/20 dark:bg-accent-dark/20"></div>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
                 {categoryDesigns.map((design) => (
                   <div key={design.id} className="group bg-secondary-light/30 dark:bg-secondary-dark/30 rounded-sm overflow-hidden shadow-lg dark:shadow-text-dark/10 hover:shadow-xl transition-shadow duration-300">
                     <div className="aspect-[3/4] overflow-hidden relative">
