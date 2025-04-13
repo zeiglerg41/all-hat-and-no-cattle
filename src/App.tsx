@@ -6,6 +6,11 @@ import Designs from './pages/Prototypes';
 import Silhouettes from './pages/Silhouettes';
 import About from './pages/About';
 
+// The base path should match the one in vite.config.ts
+// For local development, keep this as '/'
+// For WordPress, change it to match your subdirectory (e.g. '/react-app/')
+const BASE_PATH = '/';
+
 // Apply Tailwind utilities that might be missing
 // This will be used to handle very small screens (extra small - xs)
 const style = document.createElement('style');
@@ -254,7 +259,7 @@ function App() {
   }, [isDark]);
 
   return (
-    <Router>
+    <Router basename={BASE_PATH}>
       <div className="min-h-screen bg-primary-light dark:bg-primary-dark text-text-light dark:text-text-dark transition-colors duration-200 overflow-x-hidden">
         {/* Decorative southwestern pattern - top edge */}
         <div className="fixed top-0 left-0 w-full h-2 z-50 bg-[url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%228%22 viewBox=%220 0 80 8%22%3E%3Cpath d=%22M0,0 L10,4 L0,8 L10,4 L20,8 L30,4 L40,8 L50,4 L60,8 L70,4 L80,8 L80,0 Z%22 fill=%22%23c74e3e%22/%3E%3C/svg%3E')] bg-repeat-x"></div>
