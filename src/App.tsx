@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 import Home from './pages/Home';
@@ -100,8 +100,6 @@ function Navigation({ isMenuOpen, setIsMenuOpen, isDark, toggleDarkMode }: Navig
             {/* Desktop menu */}
             <div className="hidden md:flex space-x-8 items-center">
               <NavLink to="/about" location={location} />
-              <NavLink to="/designs" location={location} />
-              <NavLink to="/silhouettes" location={location} />
               <NavLink to="/#custom-requests" location={location} isHash />
             </div>
           </div>
@@ -122,28 +120,6 @@ function Navigation({ isMenuOpen, setIsMenuOpen, isDark, toggleDarkMode }: Navig
               onClick={() => setIsMenuOpen(false)}
             >
               About
-            </Link>
-            <Link
-              to="/designs"
-              className={`block px-4 py-3 text-text-light dark:text-text-dark hover:text-accent-light dark:hover:text-accent-dark transition-all duration-300 font-heading ${
-                location.pathname === '/designs' 
-                  ? 'bg-text-light/5 dark:bg-text-dark/5 border-l-2 border-accent-light dark:border-accent-dark pl-6' 
-                  : ''
-              }`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Designs
-            </Link>
-            <Link
-              to="/silhouettes"
-              className={`block px-4 py-3 text-text-light dark:text-text-dark hover:text-accent-light dark:hover:text-accent-dark transition-all duration-300 font-heading ${
-                location.pathname === '/silhouettes' 
-                  ? 'bg-text-light/5 dark:bg-text-dark/5 border-l-2 border-accent-light dark:border-accent-dark pl-6' 
-                  : ''
-              }`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Silhouettes
             </Link>
             <Link
               to="/#custom-requests"
@@ -195,21 +171,22 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isDark, setIsDark] = React.useState(() => {
     if (typeof window !== 'undefined') {
-      return document.documentElement.classList.contains('dark');
+      return localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
     }
     return false;
   });
 
   const toggleDarkMode = () => {
     setIsDark(!isDark);
-    document.documentElement.classList.toggle('dark');
   };
 
   React.useEffect(() => {
     if (isDark) {
       document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
     }
   }, [isDark]);
 
@@ -291,8 +268,10 @@ function App() {
                 <ul className="space-y-2">
                   <li><Link to="/" className="text-text-light/80 dark:text-text-dark/80 hover:text-accent-light dark:hover:text-accent-dark transition-colors">Home</Link></li>
                   <li><Link to="/about" className="text-text-light/80 dark:text-text-dark/80 hover:text-accent-light dark:hover:text-accent-dark transition-colors">About</Link></li>
+                  {/* Hidden for this version 
                   <li><Link to="/designs" className="text-text-light/80 dark:text-text-dark/80 hover:text-accent-light dark:hover:text-accent-dark transition-colors">Designs</Link></li>
                   <li><Link to="/silhouettes" className="text-text-light/80 dark:text-text-dark/80 hover:text-accent-light dark:hover:text-accent-dark transition-colors">Silhouettes</Link></li>
+                  */}
                   <li><Link to="/#custom-requests" className="text-text-light/80 dark:text-text-dark/80 hover:text-accent-light dark:hover:text-accent-dark transition-colors">Custom Requests</Link></li>
                 </ul>
               </div>

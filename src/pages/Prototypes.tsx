@@ -1,77 +1,133 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { fetchDesigns } from '../wordpress-content-api';
 
 interface Design {
   id: string;
-  name: string;
-  type: 'jacket' | 'pants' | 'vest' | 'shirt';
-  price: number;
-  image: string;
+  title: string;
+  type: 'jacket' | 'pants' | 'vest' | 'shirt'; // Only valid product types
+  price: string;
+  imageUrl: string;
   description: string;
+  category: string;
 }
 
 // Category type for type safety
 type CategoryType = 'jacket' | 'pants' | 'vest' | 'shirt' | 'all';
 
-const designs: Design[] = [
+// For filtering and display
+const displayCategoryOrder: CategoryType[] = ['jacket', 'pants', 'vest', 'shirt'];
+
+// Valid types for designs (excludes 'all' which is only for filtering)
+const validDesignTypes: ('jacket' | 'pants' | 'vest' | 'shirt')[] = ['jacket', 'pants', 'vest', 'shirt'];
+
+// Static fallback designs in case API fails
+const fallbackDesigns: Design[] = [
   // Jackets
   {
     id: 'design-1',
-    name: 'Santa Fe Worker Jacket',
+    title: 'Santa Fe Worker Jacket',
     type: 'jacket',
-    price: 850,
-    image: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea',
+    price: '850',
+    imageUrl: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea',
     description: 'Classic workwear-inspired jacket with southwestern patterns and custom brass hardware.',
+    category: 'jacket'
   },
   {
     id: 'design-3',
-    name: 'Taos Chore Coat',
+    title: 'Taos Chore Coat',
     type: 'jacket',
-    price: 795,
-    image: 'https://images.unsplash.com/photo-1617137968427-85924c800a22',
+    price: '795',
+    imageUrl: 'https://images.unsplash.com/photo-1617137968427-85924c800a22',
     description: 'Utilitarian chore coat with turquoise-inspired embroidery details and hidden internal pocket.',
+    category: 'jacket'
   },
   // Pants
   {
     id: 'design-2',
-    name: 'Mesa High-Rise Trousers',
+    title: 'Mesa High-Rise Trousers',
     type: 'pants',
-    price: 650,
-    image: 'https://images.unsplash.com/photo-1594938291221-94f18cbb5660',
+    price: '650',
+    imageUrl: 'https://images.unsplash.com/photo-1594938291221-94f18cbb5660',
     description: 'Tailored high-rise trousers with side adjusters and extended waistband in earthy tones.',
+    category: 'pants'
   },
   // Vests
   {
     id: 'design-4',
-    name: 'Coyote Leather Vest',
+    title: 'Coyote Leather Vest',
     type: 'vest',
-    price: 725,
-    image: 'https://images.unsplash.com/photo-1598522325074-042db73aa4e6',
+    price: '725',
+    imageUrl: 'https://images.unsplash.com/photo-1598522325074-042db73aa4e6',
     description: 'Hand-stitched leather vest with traditional embroidery patterns and western-style fasteners.',
+    category: 'vest'
   },
   // Shirts
   {
     id: 'design-5',
-    name: 'Saguaro Western Shirt',
+    title: 'Saguaro Western Shirt',
     type: 'shirt',
-    price: 550,
-    image: 'https://images.unsplash.com/photo-1611312449408-fcece27cdbb7',
+    price: '550',
+    imageUrl: 'https://images.unsplash.com/photo-1611312449408-fcece27cdbb7',
     description: 'Classic western-style shirt with pearl snaps and subtle cactus-inspired embroidery.',
+    category: 'shirt'
   },
 ];
-
-// Order of display
-const categoryOrder: CategoryType[] = ['jacket', 'pants', 'vest', 'shirt'];
-
-// Group designs by type
-const designsByType = categoryOrder.reduce((acc, type) => {
-  acc[type] = designs.filter(design => design.type === type);
-  return acc;
-}, {} as Record<CategoryType, Design[]>);
 
 function Designs() {
   // State to track active category filter
   const [activeFilter, setActiveFilter] = useState<CategoryType | null>(null);
+  // State to store designs from WordPress
+  const [designs, setDesigns] = useState<Design[]>(fallbackDesigns);
+  // State to track loading state
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  
+  // Fetch designs from WordPress on component mount
+  useEffect(() => {
+    async function loadDesigns() {
+      try {
+        setIsLoading(true);
+        const wpDesigns = await fetchDesigns();
+        
+        if (wpDesigns && wpDesigns.length > 0) {
+          // Transform WordPress data to match our Design interface
+          const formattedDesigns = wpDesigns.map((item: any) => {
+            // Convert string category to a valid CategoryType
+            let typeValue = item.category as string;
+            if (!validDesignTypes.includes(typeValue as 'jacket' | 'pants' | 'vest' | 'shirt')) {
+              typeValue = 'shirt'; // Default fallback
+            }
+            
+            return {
+              id: item.id.toString(),
+              title: item.title,
+              type: typeValue as 'jacket' | 'pants' | 'vest' | 'shirt',
+              price: item.price || '0',
+              imageUrl: item.imageUrl || fallbackDesigns[0].imageUrl,
+              description: item.description,
+              category: item.category || 'shirt'
+            };
+          });
+          
+          setDesigns(formattedDesigns);
+        }
+      } catch (error) {
+        console.error('Error loading designs:', error);
+        // Fallback to static data on error
+        setDesigns(fallbackDesigns);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    
+    loadDesigns();
+  }, []);
+  
+  // Group designs by type
+  const designsByType = displayCategoryOrder.reduce((acc, type) => {
+    acc[type] = designs.filter(design => design.type === type);
+    return acc;
+  }, {} as Record<CategoryType, Design[]>);
   
   // Refs for section scrolling with type safety
   const sectionRefs: Record<CategoryType, React.RefObject<HTMLDivElement>> = {
@@ -87,7 +143,7 @@ function Designs() {
     const hash = window.location.hash;
     if (hash) {
       const category = hash.replace('#', '') as CategoryType;
-      if (categoryOrder.includes(category) || category === 'all') {
+      if (displayCategoryOrder.includes(category) || category === 'all') {
         setTimeout(() => {
           scrollToSection(category === 'all' ? null : category);
         }, 100);
@@ -114,12 +170,12 @@ function Designs() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16" ref={sectionRefs.all}>
           <h1 className="text-5xl mb-6 text-accent-light dark:text-accent-dark font-heading" style={{ textShadow: '0.5px 0.5px 0px var(--color-sand)' }}>
-            Southwestern Design Collection
+            My Design Collection
           </h1>
           <div className="w-24 h-0.5 mx-auto mb-6 bg-accent-light dark:bg-accent-dark"></div>
           <p className="text-center mb-8 max-w-2xl mx-auto text-text-light/80 dark:text-text-dark/80">
-            Browse our selection of southwestern-inspired garments by type. Each design can be customized to your preferences
-            while maintaining the core elements that define our distinctive style.
+            Browse my collection of handcrafted garments by type. Each design can be customized to your preferences
+            while maintaining the core elements that define my distinctive style.
           </p>
           
           {/* Category navigation */}
@@ -134,7 +190,7 @@ function Designs() {
             >
               All Designs
             </button>
-            {categoryOrder.map(type => (
+            {displayCategoryOrder.map(type => (
               <button 
                 key={type} 
                 className={`px-4 py-2 text-sm md:text-base md:px-6 rounded-sm font-heading tracking-wide transition-all duration-300 capitalize ${
@@ -150,8 +206,16 @@ function Designs() {
           </div>
         </div>
         
+        {/* Loading indicator */}
+        {isLoading && (
+          <div className="text-center py-12">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-accent-light dark:border-accent-dark border-r-transparent dark:border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+            <p className="mt-4 text-text-light/80 dark:text-text-dark/80">Loading designs...</p>
+          </div>
+        )}
+        
         {/* Display designs by category */}
-        {categoryOrder.map(category => {
+        {!isLoading && displayCategoryOrder.map(category => {
           const categoryDesigns = designsByType[category];
           if (!categoryDesigns || categoryDesigns.length === 0) return null;
           
@@ -169,8 +233,8 @@ function Designs() {
                   <div key={design.id} className="group bg-secondary-light/30 dark:bg-secondary-dark/30 rounded-sm overflow-hidden shadow-lg dark:shadow-text-dark/10 hover:shadow-xl transition-shadow duration-300">
                     <div className="aspect-[3/4] overflow-hidden relative">
                       <img
-                        src={`${design.image}?auto=format&fit=crop&w=800&q=80`}
-                        alt={design.name}
+                        src={design.imageUrl || `https://images.unsplash.com/photo-1611312449408-fcece27cdbb7?auto=format&fit=crop&w=800&q=80`}
+                        alt={design.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                       <div className="absolute top-3 right-3 bg-accent-light dark:bg-accent-dark text-white text-xs font-bold px-3 py-1 rounded-sm uppercase tracking-wider font-heading">
@@ -178,8 +242,8 @@ function Designs() {
                       </div>
                     </div>
                     <div className="p-6">
-                      <h3 className="text-xl text-text-light dark:text-text-dark mb-2 font-heading">{design.name}</h3>
-                      <p className="text-sm mb-4 text-text-light/80 dark:text-text-dark/80">{design.description}</p>
+                      <h3 className="text-xl text-text-light dark:text-text-dark mb-2 font-heading">{design.title}</h3>
+                      <p className="text-sm mb-4 text-text-light/80 dark:text-text-dark/80" dangerouslySetInnerHTML={{ __html: design.description }}></p>
                       <div className="flex justify-between items-center">
                         <span className="text-accent-light dark:text-accent-dark font-medium font-heading">Starting at ${design.price}</span>
                         <Link
@@ -216,13 +280,13 @@ function Designs() {
         {/* Further explanation section */}
         <div className="mt-20 bg-secondary-light/20 dark:bg-secondary-dark/20 p-8 rounded-sm">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-2xl mb-4 text-text-light dark:text-text-dark font-heading">How It Works</h2>
+            <h2 className="text-2xl mb-4 text-text-light dark:text-text-dark font-heading">How My Custom Process Works</h2>
             <div className="space-y-4">
               <div className="flex gap-4">
                 <div className="w-8 h-8 rounded-full bg-accent-light dark:bg-accent-dark text-white flex items-center justify-center flex-shrink-0 font-heading">1</div>
                 <div>
                   <h3 className="text-lg text-accent-light dark:text-accent-dark font-heading">Choose Your Design</h3>
-                  <p className="text-text-light/80 dark:text-text-dark/80">Browse our collection and select a base design that speaks to your style.</p>
+                  <p className="text-text-light/80 dark:text-text-dark/80">Browse my collection and select a base design that speaks to your style.</p>
                 </div>
               </div>
               <div className="flex gap-4">
@@ -236,23 +300,23 @@ function Designs() {
                 <div className="w-8 h-8 rounded-full bg-accent-light dark:bg-accent-dark text-white flex items-center justify-center flex-shrink-0 font-heading">3</div>
                 <div>
                   <h3 className="text-lg text-accent-light dark:text-accent-dark font-heading">Perfect Fit</h3>
-                  <p className="text-text-light/80 dark:text-text-dark/80">Provide your measurements for a garment crafted specifically for your body.</p>
+                  <p className="text-text-light/80 dark:text-text-dark/80">Provide your measurements for a garment I'll craft specifically for your body.</p>
                 </div>
               </div>
               <div className="flex gap-4">
                 <div className="w-8 h-8 rounded-full bg-accent-light dark:bg-accent-dark text-white flex items-center justify-center flex-shrink-0 font-heading">4</div>
                 <div>
-                  <h3 className="text-lg text-accent-light dark:text-accent-dark font-heading">Crafted with Care</h3>
-                  <p className="text-text-light/80 dark:text-text-dark/80">Each piece is meticulously handcrafted and delivered to your doorstep.</p>
+                  <h3 className="text-lg text-accent-light dark:text-accent-dark font-heading">Handcrafted With Care</h3>
+                  <p className="text-text-light/80 dark:text-text-dark/80">I meticulously handcraft each piece and deliver it to your doorstep.</p>
                 </div>
               </div>
             </div>
             <div className="mt-8 text-center">
               <Link
                 to="/#custom-requests"
-                className="inline-block bg-transparent border border-accent-light dark:border-accent-dark text-accent-light dark:text-accent-dark hover:bg-accent-light/10 dark:hover:bg-accent-dark/10 px-6 py-3 rounded-sm transition-all duration-300 font-heading tracking-wide"
+                className="inline-block bg-accent-light dark:bg-accent-dark text-white px-8 py-3 rounded-sm hover:bg-opacity-90 transition-colors duration-300 font-heading tracking-wide"
               >
-                REQUEST A DIFFERENT DESIGN
+                Request a Custom Design
               </Link>
             </div>
           </div>

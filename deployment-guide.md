@@ -144,6 +144,37 @@ If your React app makes API requests to WordPress:
 2. Use HTTPS for all connections
 3. Consider implementing authentication for API requests
 
+## Artist-Friendly Content Management
+
+This setup allows the artist to update website content without coding knowledge by using WordPress as a headless CMS:
+
+### Setup for Artist Content Management
+
+1. **Install the Custom Plugin**: Upload the `all-hat-no-cattle` folder from `wp-content/plugins/` to your WordPress installation's plugins directory.
+2. **Activate the Plugin**: In WordPress admin, go to Plugins and activate "All Hat and No Cattle Content Manager".
+3. **Create Required Pages**: Create "Home" and "About" pages in WordPress.
+4. **Provide the Content Guide**: Share the `wordpress-content-guide.md` file with the artist to guide them through content management.
+
+### Content Update Workflow
+
+1. The artist logs into WordPress admin and updates content (designs, silhouettes, pages, etc.)
+2. The React app automatically fetches the latest content from WordPress when visitors view the site
+3. No deployment or code changes needed for content updates
+
+### Technical Implementation Details
+
+- The React app connects to WordPress via the REST API endpoints
+- Content is fetched from WordPress when the pages load
+- Custom post types (Designs, Silhouettes, Carousel Items) manage structured content
+- If the WordPress API is unavailable, the site falls back to static content
+
+### Testing the Content Management
+
+After setup, verify that:
+1. New designs added in WordPress appear on the website
+2. Content edits in WordPress pages reflect on the website 
+3. Image uploads work correctly for featured images
+
 ## Quick Deployment Using the Build Script
 
 We've included a helpful build script that automates the configuration process:

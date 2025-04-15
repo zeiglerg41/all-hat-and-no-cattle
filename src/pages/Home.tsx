@@ -73,7 +73,7 @@ function Home() {
                 VIEW PORTFOLIO
               </button>
               <button 
-                onClick={() => document.getElementById('commission')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => document.getElementById('custom-requests')?.scrollIntoView({ behavior: 'smooth' })}
                 className="bg-accent-light dark:bg-accent-dark hover:bg-opacity-90 text-primary-light dark:text-primary-dark px-8 py-3 rounded-sm transition-all duration-300"
               >
                 REQUEST A CUSTOM PIECE
@@ -129,68 +129,128 @@ function Home() {
         </div>
       </section>
 
-      {/* Commission Form Section */}
-      <section id="commission" className="py-20 px-4 bg-secondary-light dark:bg-secondary-dark overflow-x-hidden max-w-[100vw]">
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl md:text-3xl text-center mb-8 md:mb-12 text-text-light dark:text-text-dark font-heading break-words">
-            Request a Custom Piece
-          </h2>
-          <form onSubmit={handleSubmit} className="space-y-6 w-full">
-            <div>
-              <label htmlFor="name" className="block mb-2 text-text-light dark:text-text-dark">Name</label>
-              <input
-                type="text"
-                id="name"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full bg-primary-light dark:bg-primary-dark border border-text-light/20 dark:border-text-dark/20 p-3 rounded-sm focus:outline-none focus:border-accent-light dark:focus:border-accent-dark text-text-light dark:text-text-dark"
-                required
-              />
+      {/* Commission Form */}
+      <section id="custom-requests" className="py-20 px-4 bg-secondary-light/20 dark:bg-secondary-dark/20 overflow-x-hidden">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="text-4xl mb-4 text-accent-light dark:text-accent-dark font-heading" style={{ textShadow: '0.5px 0.5px 0px var(--color-sand)' }}>
+              Custom Commissions
+            </h2>
+            <div className="w-24 h-0.5 mx-auto mb-6 bg-accent-light dark:bg-accent-dark"></div>
+            <p className="text-lg max-w-2xl mx-auto text-text-light/80 dark:text-text-dark/80">
+              Looking for something unique? I'd love to bring your vision to life. Share the details below and I'll get back to you to discuss your custom piece.
+            </p>
+          </div>
+
+          <div className="bg-primary-light dark:bg-primary-dark border border-accent-light/20 dark:border-accent-dark/20 rounded-sm shadow-lg overflow-hidden">
+            <div className="p-6 md:p-8">
+              <form className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="name" className="block mb-2 text-text-light/90 dark:text-text-dark/90 font-medium">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      className="w-full px-4 py-2 rounded-sm border border-accent-light/20 dark:border-accent-dark/20 bg-secondary-light/30 dark:bg-secondary-dark/30 focus:ring-2 focus:ring-accent-light dark:focus:ring-accent-dark focus:outline-none transition-all"
+                      placeholder="Your name"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block mb-2 text-text-light/90 dark:text-text-dark/90 font-medium">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      className="w-full px-4 py-2 rounded-sm border border-accent-light/20 dark:border-accent-dark/20 bg-secondary-light/30 dark:bg-secondary-dark/30 focus:ring-2 focus:ring-accent-light dark:focus:ring-accent-dark focus:outline-none transition-all"
+                      placeholder="Your email"
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label htmlFor="garment-type" className="block mb-2 text-text-light/90 dark:text-text-dark/90 font-medium">
+                    Type of Garment
+                  </label>
+                  <select
+                    id="garment-type"
+                    className="w-full px-4 py-2 rounded-sm border border-accent-light/20 dark:border-accent-dark/20 bg-secondary-light/30 dark:bg-secondary-dark/30 focus:ring-2 focus:ring-accent-light dark:focus:ring-accent-dark focus:outline-none transition-all"
+                  >
+                    <option value="">Select a garment type</option>
+                    <option value="jacket">Jacket</option>
+                    <option value="vest">Vest</option>
+                    <option value="pants">Pants</option>
+                    <option value="shirt">Shirt</option>
+                    <option value="other">Other (please describe)</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label htmlFor="inspiration" className="block mb-2 text-text-light/90 dark:text-text-dark/90 font-medium">
+                    Inspiration &amp; References
+                  </label>
+                  <textarea
+                    id="inspiration"
+                    rows={3}
+                    className="w-full px-4 py-2 rounded-sm border border-accent-light/20 dark:border-accent-dark/20 bg-secondary-light/30 dark:bg-secondary-dark/30 focus:ring-2 focus:ring-accent-light dark:focus:ring-accent-dark focus:outline-none transition-all"
+                    placeholder="Share any inspirations, reference images, or existing designs you like"
+                  ></textarea>
+                </div>
+                
+                <div>
+                  <label htmlFor="details" className="block mb-2 text-text-light/90 dark:text-text-dark/90 font-medium">
+                    Project Details
+                  </label>
+                  <textarea
+                    id="details"
+                    rows={5}
+                    className="w-full px-4 py-2 rounded-sm border border-accent-light/20 dark:border-accent-dark/20 bg-secondary-light/30 dark:bg-secondary-dark/30 focus:ring-2 focus:ring-accent-light dark:focus:ring-accent-dark focus:outline-none transition-all"
+                    placeholder="Describe what you're looking for in detail: materials, colors, fit preferences, special features, etc."
+                  ></textarea>
+                </div>
+
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                  <div className="text-sm text-text-light/60 dark:text-text-dark/60 max-w-md">
+                    By submitting this form, you're taking the first step in our collaborative design process. I'll reach out to discuss your ideas, timeline, and pricing.
+                  </div>
+                  <button
+                    type="submit"
+                    className="px-8 py-3 bg-accent-light dark:bg-accent-dark text-white font-heading tracking-wide rounded-sm hover:bg-opacity-90 transition-all duration-300 whitespace-nowrap"
+                  >
+                    Send Request
+                  </button>
+                </div>
+              </form>
             </div>
-            <div>
-              <label htmlFor="email" className="block mb-2 text-text-light dark:text-text-dark">Email</label>
-              <input
-                type="email"
-                id="email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full bg-primary-light dark:bg-primary-dark border border-text-light/20 dark:border-text-dark/20 p-3 rounded-sm focus:outline-none focus:border-accent-light dark:focus:border-accent-dark text-text-light dark:text-text-dark"
-                required
-              />
+          </div>
+          
+          <div className="mt-10 text-center">
+            <h3 className="text-2xl mb-6 text-accent-light dark:text-accent-dark font-heading">My Custom Process</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-center">
+              <div className="p-4">
+                <div className="w-12 h-12 rounded-full bg-accent-light dark:bg-accent-dark text-white flex items-center justify-center mx-auto mb-3 text-xl font-heading">1</div>
+                <h4 className="font-heading text-lg mb-2">Consultation</h4>
+                <p className="text-sm text-text-light/80 dark:text-text-dark/80">We'll discuss your ideas, preferences, and requirements in detail</p>
+              </div>
+              <div className="p-4">
+                <div className="w-12 h-12 rounded-full bg-accent-light dark:bg-accent-dark text-white flex items-center justify-center mx-auto mb-3 text-xl font-heading">2</div>
+                <h4 className="font-heading text-lg mb-2">Design</h4>
+                <p className="text-sm text-text-light/80 dark:text-text-dark/80">I'll create sketches and select materials based on our conversation</p>
+              </div>
+              <div className="p-4">
+                <div className="w-12 h-12 rounded-full bg-accent-light dark:bg-accent-dark text-white flex items-center justify-center mx-auto mb-3 text-xl font-heading">3</div>
+                <h4 className="font-heading text-lg mb-2">Creation</h4>
+                <p className="text-sm text-text-light/80 dark:text-text-dark/80">Your piece is handcrafted with meticulous attention to detail</p>
+              </div>
+              <div className="p-4">
+                <div className="w-12 h-12 rounded-full bg-accent-light dark:bg-accent-dark text-white flex items-center justify-center mx-auto mb-3 text-xl font-heading">4</div>
+                <h4 className="font-heading text-lg mb-2">Delivery</h4>
+                <p className="text-sm text-text-light/80 dark:text-text-dark/80">Your finished piece is carefully prepared and shipped to you</p>
+              </div>
             </div>
-            <div>
-              <label htmlFor="pieceType" className="block mb-2 text-text-light dark:text-text-dark">Piece Type</label>
-              <select
-                id="pieceType"
-                value={formData.pieceType}
-                onChange={(e) => setFormData({ ...formData, pieceType: e.target.value as PieceType })}
-                className="w-full bg-primary-light dark:bg-primary-dark border border-text-light/20 dark:border-text-dark/20 p-3 rounded-sm focus:outline-none focus:border-accent-light dark:focus:border-accent-dark text-text-light dark:text-text-dark"
-                required
-              >
-                <option value="jacket">Jacket</option>
-                <option value="pants">Pants</option>
-                <option value="vest">Vest</option>
-                <option value="shirt">Shirt</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="notes" className="block mb-2 text-text-light dark:text-text-dark">Notes</label>
-              <textarea
-                id="notes"
-                value={formData.notes}
-                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                className="w-full bg-primary-light dark:bg-primary-dark border border-text-light/20 dark:border-text-dark/20 p-3 rounded-sm focus:outline-none focus:border-accent-light dark:focus:border-accent-dark text-text-light dark:text-text-dark h-32"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-accent-light dark:bg-accent-dark hover:bg-opacity-90 text-primary-light dark:text-primary-dark py-3 sm:py-4 rounded-sm transition-all duration-300 flex items-center justify-center gap-2 text-sm sm:text-base"
-            >
-              <Scissors className="w-4 h-4 sm:w-5 sm:h-5" />
-              <span className="break-normal">Submit Request</span>
-            </button>
-          </form>
+          </div>
         </div>
       </section>
     </>
